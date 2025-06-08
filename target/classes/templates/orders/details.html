@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,18 +9,19 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
     <link rel="stylesheet" th:href="@{/css/styles.css}">
 </head>
+
 <body>
     <!-- Navigation -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-            <a class="navbar-brand" href="/">E-Commerce Store</a>
+            <a class="navbar-brand" href="/">Buy Plant.com</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav me-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link active" href="/">Home</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/products}">Products</a>
@@ -28,27 +30,36 @@
                         <a class="nav-link" th:href="@{/about}">About</a>
                     </li>
                 </ul>
-                
+
                 <!-- Search Form -->
                 <form class="d-flex mx-3" th:action="@{/products/search}" method="get">
                     <input class="form-control me-2" type="search" name="query" placeholder="Search products" required>
                     <button class="btn btn-outline-light" type="submit">Search</button>
                 </form>
-                
+
                 <ul class="navbar-nav">
                     <li class="nav-item">
                         <a class="nav-link" th:href="@{/cart}">
                             <i class="bi bi-cart"></i> Cart
                         </a>
                     </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/login}">Login</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="!isAuthenticated()">
+                        <a class="nav-link" th:href="@{/register}">Register</a>
+                    </li>
                     <li class="nav-item dropdown" sec:authorize="isAuthenticated()">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                            data-bs-toggle="dropdown">
                             <i class="bi bi-person-circle"></i> <span sec:authentication="name"></span>
                         </a>
                         <ul class="dropdown-menu">
                             <li><a class="dropdown-item" th:href="@{/profile}">My Profile</a></li>
-                            <li><a class="dropdown-item active" th:href="@{/orders}">My Orders</a></li>
-                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" th:href="@{/orders}">My Orders</a></li>
+                            <li>
+                                <hr class="dropdown-divider">
+                            </li>
                             <li>
                                 <form th:action="@{/logout}" method="post">
                                     <button class="dropdown-item" type="submit">Logout</button>
@@ -68,14 +79,14 @@
             <strong>Success!</strong> Your order has been placed successfully.
             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
-        
+
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Order #<span th:text="${order.id}">123</span></h1>
             <a th:href="@{/orders}" class="btn btn-outline-secondary">
                 <i class="bi bi-arrow-left"></i> Back to Orders
             </a>
         </div>
-        
+
         <div class="row">
             <div class="col-md-8">
                 <!-- Order Items -->
@@ -98,10 +109,12 @@
                                     <tr th:each="item : ${order.orderItems}">
                                         <td>
                                             <div class="d-flex align-items-center">
-                                                <img th:src="${item.product.imageUrl != null ? item.product.imageUrl : '/images/placeholder-small.png'}" alt="Product Image" class="img-thumbnail me-3" style="width: 60px;">
+                                                <img th:src="${item.product.imageUrl != null ? item.product.imageUrl : '/images/placeholder-small.png'}"
+                                                    alt="Product Image" class="img-thumbnail me-3" style="width: 60px;">
                                                 <div>
                                                     <h6 th:text="${item.product.name}">Product Name</h6>
-                                                    <small class="text-muted" th:text="${item.product.sku}">SKU123456</small>
+                                                    <small class="text-muted"
+                                                        th:text="${item.product.sku}">SKU123456</small>
                                                 </div>
                                             </div>
                                         </td>
@@ -114,7 +127,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Shipping Address -->
                 <div class="card mb-4">
                     <div class="card-header">
@@ -127,7 +140,7 @@
                     </div>
                 </div>
             </div>
-            
+
             <div class="col-md-4">
                 <!-- Order Summary -->
                 <div class="card mb-4">
@@ -137,11 +150,13 @@
                     <div class="card-body">
                         <div class="d-flex justify-content-between mb-2">
                             <span>Order Date:</span>
-                            <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2023-01-01 12:34</span>
+                            <span th:text="${#temporals.format(order.orderDate, 'yyyy-MM-dd HH:mm')}">2023-01-01
+                                12:34</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Status:</span>
-                            <span th:class="${'badge ' + 
+                            <span
+                                th:class="${'badge ' + 
                                 (order.status == T(com.ecommerce.model.Order.Status).PENDING ? 'bg-warning' : 
                                 (order.status == T(com.ecommerce.model.Order.Status).PROCESSING ? 'bg-info' : 
                                 (order.status == T(com.ecommerce.model.Order.Status).SHIPPED ? 'bg-primary' : 
@@ -151,12 +166,14 @@
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Payment Method:</span>
-                            <span th:text="${order.paymentMethod != null ? order.paymentMethod : 'Credit Card'}">Credit Card</span>
+                            <span th:text="${order.paymentMethod != null ? order.paymentMethod : 'Credit Card'}">Credit
+                                Card</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Subtotal:</span>
-                            <span th:text="'$' + ${#numbers.formatDecimal(order.total.multiply(new java.math.BigDecimal('0.85')), 1, 2)}">$299.97</span>
+                            <span
+                                th:text="'$' + ${#numbers.formatDecimal(order.total.multiply(new java.math.BigDecimal('0.85')), 1, 2)}">$299.97</span>
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Shipping:</span>
@@ -164,7 +181,8 @@
                         </div>
                         <div class="d-flex justify-content-between mb-2">
                             <span>Tax (8%):</span>
-                            <span th:text="'$' + ${#numbers.formatDecimal(order.total.multiply(new java.math.BigDecimal('0.08')), 1, 2)}">$24.00</span>
+                            <span
+                                th:text="'$' + ${#numbers.formatDecimal(order.total.multiply(new java.math.BigDecimal('0.08')), 1, 2)}">$24.00</span>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between mb-2 fw-bold">
@@ -173,15 +191,17 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Tracking Information -->
-                <div class="card mb-4" th:if="${order.status != T(com.ecommerce.model.Order.Status).PENDING and order.status != T(com.ecommerce.model.Order.Status).CANCELLED}">
+                <div class="card mb-4"
+                    th:if="${order.status != T(com.ecommerce.model.Order.Status).PENDING and order.status != T(com.ecommerce.model.Order.Status).CANCELLED}">
                     <div class="card-header">
                         <h5 class="mb-0">Tracking Information</h5>
                     </div>
                     <div class="card-body">
                         <div th:if="${order.trackingNumber != null}">
-                            <p><strong>Tracking Number:</strong> <span th:text="${order.trackingNumber}">TRK123456789</span></p>
+                            <p><strong>Tracking Number:</strong> <span
+                                    th:text="${order.trackingNumber}">TRK123456789</span></p>
                             <a href="#" class="btn btn-outline-primary btn-sm">Track Package</a>
                         </div>
                         <div th:unless="${order.trackingNumber != null}">
@@ -189,7 +209,7 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Actions -->
                 <div class="card" th:if="${order.status == T(com.ecommerce.model.Order.Status).PENDING}">
                     <div class="card-header">
@@ -206,11 +226,11 @@
     </div>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
+   <footer class="bg-dark text-white py-4">
         <div class="container">
             <div class="row">
                 <div class="col-md-4">
-                    <h5>E-Commerce Store</h5>
+                    <h5>Buy Plants</h5>
                     <p>Your one-stop shop for all your needs.</p>
                 </div>
                 <div class="col-md-4">
@@ -224,20 +244,21 @@
                 <div class="col-md-4">
                     <h5>Contact Us</h5>
                     <address>
-                        <p><i class="bi bi-geo-alt"></i> 123 E-Commerce St, City, Country</p>
-                        <p><i class="bi bi-envelope"></i> <a href="mailto:info@ecommerce.com" class="text-white">info@ecommerce.com</a></p>
-                        <p><i class="bi bi-telephone"></i> +1 234 567 8900</p>
+                        <p><i class="bi bi-geo-alt"></i> No :134 , Katubedda , Moratuwa , Sri Lanka</p>
+                        <p><i class="bi bi-envelope"></i> <a href="mailto:info@ecommerce.com"
+                                class="text-white">info@BuyPlant.com</a></p>
+                        <p><i class="bi bi-telephone"></i> +94 75 678 678 2</p>
                     </address>
                 </div>
             </div>
             <hr>
             <div class="text-center">
-                <p>&copy; 2025 E-Commerce Store. All rights reserved.</p>
+                <p>&copy; 2025 Buy Plant. All rights reserved.</p>
             </div>
         </div>
     </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
     <script th:src="@{/js/scripts.js}"></script>
 </body>
+
 </html>
