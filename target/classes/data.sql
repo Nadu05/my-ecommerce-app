@@ -1,12 +1,11 @@
 -- Insert Categories
-INSERT INTO categories (name, description) VALUES 
-('Electronics', 'Electronic devices and gadgets'),
-('Clothing', 'Apparel and fashion items'),
-('Books', 'Books and publications'),
-('Home & Kitchen', 'Home appliances and kitchen items');
+INSERT INTO categories  (name, description) VALUES 
+('spring plants', 'flowering plants and foliage'),
+('indoor plants', 'houseplants for indoor spaces'),
+('outdoor plants', 'plants suitable for outdoor gardens');
 
 -- Insert Products with additional fields
-INSERT INTO products (name, description, price, stock_quantity, image_url, category_id, brand, sku, weight, dimensions) VALUES
+INSERT INTO products  (name, description, price, stock_quantity, image_url, category_id, brand, sku, weight, dimensions) VALUES
 ('Red Anthurium Plant', 'Our red anthurium is a tropical stunner. Also known as the Flamingo plant because of its unique, graceful design, this plant''s heart-shaped flowers and glossy green leaves will instantly brighten any space. With the right amount of TLC, it will bloom all year long. Designed in a sleek white container.', 920, 7, 'https://res.cloudinary.com/dmua5lsbw/image/upload/01_01-red_anthurium_rsqudy.jpg', 1, 'gk', 'PLT4832', 450, '25 x 20 x 30 cm'),
 ('Pink Rose Plant', 'A total charmer. Our rose plant arrives budding and ready to show off sweet pink blooms, just in time for a spring room refresh. Available with your choice of container.', 1150, 4, 'https://res.cloudinary.com/dmua5lsbw/image/upload/01_02-pink_rose_qnmg8e.jpg', 1, 'gk', 'PLT7291', 300, '20 x 15 x 25 cm'),
 ('Large Phalaenopsis Orchid: Blue', 'The epitome of elegance, our blue Phalaenopsis orchid features two tall, graceful stems that cascade up to showcase multiple blooms. Known for their magnificent beauty, these gorgeous plants can last up to six weeks with proper care', 1300, 6, 'https://res.cloudinary.com/dmua5lsbw/image/upload/01_03-orchid_blue_gfci8h.jpg', 1, 'gk', 'PLT1946', 600, '30 x 25 x 40 cm'),
